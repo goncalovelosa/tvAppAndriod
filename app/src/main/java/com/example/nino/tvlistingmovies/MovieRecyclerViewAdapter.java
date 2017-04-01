@@ -51,6 +51,8 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
             public void onClick(View v) {
                 if (null != mListener) {
                     mListener.onListFragmentInteraction(holder.mItem);
+                    //Factory Method, used to initiate a fragment.
+                    //IDEA Mudar para um argumento único
                     MovieDetailsFragment details = MovieDetailsFragment
                             .newInstance(holder.mItem.mId,
                                     holder.mItem.mTitle,
@@ -59,18 +61,23 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
                                     holder.mItem.mReleaseDate,
                                     holder.mItem.mOverview,
                                     holder.mItem.mBackdrop);
+
                     ((MainActivity)mContext).displayDetails(details);
                 }
             }
         });
     }
 
-
+    /**
+     *
+     * @return Current Item count
+     */
     @Override
     public int getItemCount() {
         return mValues.size();
     }
 
+    //A ViewHolder describes an item view and metadata about its place within the RecyclerView
     public class ViewHolder extends RecyclerView.ViewHolder{
 
 
@@ -94,6 +101,11 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
 
         }
 
+        /**
+         * Used to"bind" de details of the movie.
+         *
+         * @param movieData Object contains all the information to populate the view with information.
+         */
         public void bindMovieData(MovieItem movieData){
             mItem = movieData;
             Picasso.with(mMoviePoster.getContext())

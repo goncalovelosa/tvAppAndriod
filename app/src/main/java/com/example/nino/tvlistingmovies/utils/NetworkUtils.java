@@ -14,10 +14,11 @@ import java.util.Scanner;
  */
 
 public class NetworkUtils {
-
+    //Basic Movies URL
     final static String MOVIES_BASIC_URL = "https://api.themoviedb.org/3/";
-
+    //Discover, populate
     final static String DISCOVER = "discover/movie";
+
     final static String SEARCH = "search/movie";
 
     final static String PARAM_SORT = "sort_by";

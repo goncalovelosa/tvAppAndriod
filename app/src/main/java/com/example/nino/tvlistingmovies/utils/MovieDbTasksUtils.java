@@ -25,12 +25,20 @@ public class MovieDbTasksUtils extends AsyncTask<URL, Void, String> {
         this.mRecyclerView = recyclerView;
     }
 
+    /**
+     * Action to be executed before the Task
+     */
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
         mRequesting = true;
     }
 
+    /**
+     * Main task
+     * @param params
+     * @return
+     */
     @Override
     protected String doInBackground(URL... params) {
         URL searchUrl = params[0];
@@ -43,6 +51,10 @@ public class MovieDbTasksUtils extends AsyncTask<URL, Void, String> {
         return moviesData;
     }
 
+    /**
+     * Executed inidiatly after the doInBackgrouns ends
+     * @param res
+     */
     @Override
     protected void onPostExecute(String res) {
         if (res != null && !res.equals("")) {

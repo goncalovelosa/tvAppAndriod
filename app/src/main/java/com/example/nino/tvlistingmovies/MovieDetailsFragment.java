@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
@@ -27,8 +26,7 @@ import com.squareup.picasso.Picasso;
  * create an instance of this fragment.
  */
 public class MovieDetailsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    // Fragment initialization
     private static final String ARG_ID = "id";
     private static final String ARG_TITLE = "original_title";
     private static final String ARG_AVG_VOTES = "vote_average";
@@ -38,7 +36,7 @@ public class MovieDetailsFragment extends Fragment {
     private static final String ARG_BACKDROP = "backdrop_path";
 
 
-    // TODO: Rename and change types of parameters
+    // UI Elements
     private ImageView ivBackDrop;
     private TextView tvTitle;
     private RatingBar rbAvgVotes;
@@ -86,7 +84,7 @@ public class MovieDetailsFragment extends Fragment {
     }
 
     /**
-     * 
+     * Populate fragment with information passed on creation.
      *
      * @param inflater
      * @param container
@@ -98,6 +96,8 @@ public class MovieDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movie_details, container, false);
         if (getArguments() != null) {
+            //IDEA Separar multiplos metodos!
+            //Get UI Element
             ivBackDrop = (ImageView) view.findViewById(R.id.im_backdrop);
             tvTitle = (TextView) view.findViewById(R.id.tv_movie_title);
             rbAvgVotes = (RatingBar) view.findViewById(R.id.rb_vote_average);
@@ -105,6 +105,7 @@ public class MovieDetailsFragment extends Fragment {
             tvReleaseDate = (TextView) view.findViewById(R.id.tv_release_date);
             tvOverview = (TextView) view.findViewById(R.id.tv_overview);
 
+            //Populate UI Elements
             Picasso.with(getContext()).load(getArguments()
                     .getString(ARG_BACKDROP))
                     .placeholder(R.drawable.ic_image_photo)
@@ -116,30 +117,26 @@ public class MovieDetailsFragment extends Fragment {
             tvReleaseDate.append(" "+getArguments().getString(ARG_RELEASE_DATE));
             tvTotalVotes.setText(getArguments().getString(ARG_VOTE_COUNT));
 
+            //Enable Scrolling on TextView that contains the full overview.
             tvOverview.setMovementMethod(new ScrollingMovementMethod());
 
+            //Click Listener for Floating Action Button
             FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_share);
             fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                sharingIntent.setType("text/plain");
-                String shareBody = "Release Date: "+getArguments().getString(ARG_RELEASE_DATE);
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getArguments().getString(ARG_TITLE));
-                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-                startActivity(Intent.createChooser(sharingIntent, "Share via"));
+                @Override
+                public void onClick(View view) {
+                    //Sharing Movie Title as subject and release date as body
+                    Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                    sharingIntent.setType("text/plain");
+                    String shareBody = "Release Date: "+getArguments().getString(ARG_RELEASE_DATE);
+                    sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getArguments().getString(ARG_TITLE));
+                    sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                    startActivity(Intent.createChooser(sharingIntent, "Share via"));
             }
         });
 
         }
         return view;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
@@ -172,5 +169,6 @@ public class MovieDetailsFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+        //IDEA Hmmm podia ser utilizado para implemtar a alteração de fragmento...
     }
 }

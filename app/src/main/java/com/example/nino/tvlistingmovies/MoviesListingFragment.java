@@ -1,7 +1,6 @@
 package com.example.nino.tvlistingmovies;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,11 +15,6 @@ import com.example.nino.tvlistingmovies.utils.MovieContent.MovieItem;
 import com.example.nino.tvlistingmovies.utils.MovieDbTasksUtils;
 import com.example.nino.tvlistingmovies.utils.NetworkUtils;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.net.URL;
 
 /**
