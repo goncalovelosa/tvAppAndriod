@@ -1,5 +1,6 @@
 package com.example.nino.tvlistingmovies;
 
+import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -10,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -68,14 +70,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
 
     /**
@@ -84,7 +78,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+//        Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 
         if (!isToastNotRunning()){
             lastToast.cancel();
@@ -92,9 +86,9 @@ public class MainActivity extends AppCompatActivity
         else if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
-        else if (f instanceof MovieDetailsFragment) {
-            // call method
-        }
+//        else if (f instanceof MovieDetailsFragment) {
+//            super.onBackPressed();
+//        }
         else  {
             super.onBackPressed();
         }
@@ -178,6 +172,15 @@ public class MainActivity extends AppCompatActivity
      */
     private void comingSoon(){
         showToastFromBackground("Awesome feature coming soon");
+    }
+
+    public void displayDetails(Fragment details){
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, details)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override

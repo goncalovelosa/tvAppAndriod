@@ -27,6 +27,7 @@ public class MovieContent {
      */
     public static class MovieItem {
 
+        public final static String MOVIES_IMAGES_URL = "http://image.tmdb.org/t/p/w500";
 
         public String mId;             //Movie Id
         public String mTitle;          //Title of the movie
@@ -45,8 +46,8 @@ public class MovieContent {
                 mTotalVotes = "Total Votes: " + movieJSON.getString("vote_count");
                 mReleaseDate = movieJSON.getString("release_date");
                 mOverview = movieJSON.getString("overview");
-                mBackdrop = movieJSON.getString("backdrop_path");
-                mPoster = movieJSON.getString("poster_path");
+                mBackdrop = MOVIES_IMAGES_URL + movieJSON.getString("backdrop_path");
+                mPoster = MOVIES_IMAGES_URL + movieJSON.getString("poster_path");
             }catch (JSONException e){
                 e.printStackTrace();
             }

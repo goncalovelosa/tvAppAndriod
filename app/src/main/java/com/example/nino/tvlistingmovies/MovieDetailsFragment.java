@@ -1,12 +1,21 @@
 package com.example.nino.tvlistingmovies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -20,12 +29,23 @@ import android.view.ViewGroup;
 public class MovieDetailsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_ID = "id";
+    private static final String ARG_TITLE = "original_title";
+    private static final String ARG_AVG_VOTES = "vote_average";
+    private static final String ARG_VOTE_COUNT = "total_votes";
+    private static final String ARG_RELEASE_DATE = "release_date";
+    private static final String ARG_OVERVIEW = "overview";
+    private static final String ARG_BACKDROP = "backdrop_path";
+
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private ImageView ivBackDrop;
+    private TextView tvTitle;
+    private RatingBar rbAvgVotes;
+    private TextView tvReleaseDate;
+    private TextView tvOverview;
+    private TextView tvTotalVotes;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -37,16 +57,25 @@ public class MovieDetailsFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MovieDetailsFragment.
+     * @param id
+     * @param title
+     * @param voteAvg
+     * @param releaseDate
+     * @param overView
+     * @param backDrop
+     * @return A new instance of fragment MovieDetailsFragment
      */
     // TODO: Rename and change types and number of parameters
-    public static MovieDetailsFragment newInstance(String param1, String param2) {
+    public static MovieDetailsFragment newInstance(String id, String title, float voteAvg, String totalVotes, String releaseDate, String overView, String backDrop) {
         MovieDetailsFragment fragment = new MovieDetailsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_ID, id);
+        args.putString(ARG_TITLE, title);
+        args.putFloat(ARG_AVG_VOTES, voteAvg);
+        args.putString(ARG_VOTE_COUNT,totalVotes);
+        args.putString(ARG_RELEASE_DATE, releaseDate);
+        args.putString(ARG_OVERVIEW, overView);
+        args.putString(ARG_BACKDROP, backDrop);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,17 +83,56 @@ public class MovieDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
+    /**
+     * 
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return Created View
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movie_details, container, false);
+        View view = inflater.inflate(R.layout.fragment_movie_details, container, false);
+        if (getArguments() != null) {
+            ivBackDrop = (ImageView) view.findViewById(R.id.im_backdrop);
+            tvTitle = (TextView) view.findViewById(R.id.tv_movie_title);
+            rbAvgVotes = (RatingBar) view.findViewById(R.id.rb_vote_average);
+            tvTotalVotes = (TextView) view.findViewById(R.id.tv_vote_count);
+            tvReleaseDate = (TextView) view.findViewById(R.id.tv_release_date);
+            tvOverview = (TextView) view.findViewById(R.id.tv_overview);
+
+            Picasso.with(getContext()).load(getArguments()
+                    .getString(ARG_BACKDROP))
+                    .placeholder(R.drawable.ic_image_photo)
+                    .error(R.drawable.ic_image_error)
+                    .into(ivBackDrop);
+            tvTitle.setText(getArguments().getString(ARG_TITLE));
+            tvOverview.setText(getArguments().getString(ARG_OVERVIEW));
+            rbAvgVotes.setRating(getArguments().getFloat(ARG_AVG_VOTES));
+            tvReleaseDate.append(" "+getArguments().getString(ARG_RELEASE_DATE));
+            tvTotalVotes.setText(getArguments().getString(ARG_VOTE_COUNT));
+
+            tvOverview.setMovementMethod(new ScrollingMovementMethod());
+
+            FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_share);
+            fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String shareBody = "Release Date: "+getArguments().getString(ARG_RELEASE_DATE);
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getArguments().getString(ARG_TITLE));
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(sharingIntent, "Share via"));
+            }
+        });
+
+        }
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

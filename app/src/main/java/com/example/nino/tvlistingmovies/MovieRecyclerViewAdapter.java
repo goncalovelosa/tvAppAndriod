@@ -1,5 +1,6 @@
 package com.example.nino.tvlistingmovies;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.nino.tvlistingmovies.MoviesListingFragment.OnListFragmentInteractionListener;
 import com.example.nino.tvlistingmovies.utils.MovieContent.MovieItem;
@@ -23,6 +23,7 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
 
     private final List<MovieItem> mValues;
     private final OnListFragmentInteractionListener mListener;
+    private Context mContext;
 
     public MovieRecyclerViewAdapter(List<MovieItem> items, OnListFragmentInteractionListener listener) {
         mValues = items;
@@ -31,6 +32,7 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        mContext = parent.getContext();
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_movie_entry, parent, false);
         return new ViewHolder(view);
@@ -41,18 +43,28 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
         holder.mItem = mValues.get(position);
         holder.bindMovieData(holder.mItem);
 
+        /**
+         * Click Listener for the List View Item position
+         */
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
-
+                    MovieDetailsFragment details = MovieDetailsFragment
+                            .newInstance(holder.mItem.mId,
+                                    holder.mItem.mTitle,
+                                    holder.mItem.mAvgVotes,
+                                    holder.mItem.mTotalVotes,
+                                    holder.mItem.mReleaseDate,
+                                    holder.mItem.mOverview,
+                                    holder.mItem.mBackdrop);
+                    ((MainActivity)mContext).displayDetails(details);
                 }
             }
         });
     }
+
 
     @Override
     public int getItemCount() {
@@ -61,7 +73,6 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        public final static String MOVIES_IMAGES_URL = "http://image.tmdb.org/t/p/w500";
 
         public final View mView;
         public final ImageView mMoviePoster;
@@ -86,7 +97,7 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
         public void bindMovieData(MovieItem movieData){
             mItem = movieData;
             Picasso.with(mMoviePoster.getContext())
-                    .load(MOVIES_IMAGES_URL + mItem.mPoster)
+                    .load(mItem.mPoster)
                     .placeholder(R.drawable.ic_image_photo)
                     .error(R.drawable.ic_image_error)
                     .into(mMoviePoster);
