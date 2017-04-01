@@ -16,16 +16,16 @@ import java.util.Scanner;
 public class NetworkUtils {
     //Basic Movies URL
     final static String MOVIES_BASIC_URL = "https://api.themoviedb.org/3/";
-    //Discover, populate
+    //Discover movies URL
     final static String DISCOVER = "discover/movie";
-
+    //Search Movies URL
     final static String SEARCH = "search/movie";
-
+    //Params used to fetch movies details
     final static String PARAM_SORT = "sort_by";
     final static String PARAM_API = "api_key";
     final static String PARAM_PAGE = "page";
     final static String PARAM_SEARCH = "query";
-
+    //Params values, default values
     final static String sortBy = "popularity.desc";
     final static String apiKey = "9c8a3badf8660ed8e756140ea8afda51";
 
@@ -51,6 +51,7 @@ public class NetworkUtils {
         return url;
     }
 
+    //IDEA Fazer a pesquisa...
     /**
      * Builds the URL used to search The Movie Db.
      *

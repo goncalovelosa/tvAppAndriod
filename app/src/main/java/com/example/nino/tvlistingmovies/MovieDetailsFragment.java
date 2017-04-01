@@ -55,15 +55,14 @@ public class MovieDetailsFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param id
-     * @param title
-     * @param voteAvg
-     * @param releaseDate
-     * @param overView
-     * @param backDrop
+     * @param id Movie Id
+     * @param title Movie Title
+     * @param voteAvg Average Voting
+     * @param releaseDate Release Date
+     * @param overView description of the movie
+     * @param backDrop Contains the URL for th backdrop image
      * @return A new instance of fragment MovieDetailsFragment
      */
-    // TODO: Rename and change types and number of parameters
     public static MovieDetailsFragment newInstance(String id, String title, float voteAvg, String totalVotes, String releaseDate, String overView, String backDrop) {
         MovieDetailsFragment fragment = new MovieDetailsFragment();
         Bundle args = new Bundle();
@@ -86,9 +85,9 @@ public class MovieDetailsFragment extends Fragment {
     /**
      * Populate fragment with information passed on creation.
      *
-     * @param inflater
+     * @param inflater Inflate Activity with fragment
      * @param container
-     * @param savedInstanceState
+     * @param savedInstanceState Aplication State
      * @return Created View
      */
     @Override
@@ -105,17 +104,7 @@ public class MovieDetailsFragment extends Fragment {
             tvReleaseDate = (TextView) view.findViewById(R.id.tv_release_date);
             tvOverview = (TextView) view.findViewById(R.id.tv_overview);
 
-            //Populate UI Elements
-            Picasso.with(getContext()).load(getArguments()
-                    .getString(ARG_BACKDROP))
-                    .placeholder(R.drawable.ic_image_photo)
-                    .error(R.drawable.ic_image_error)
-                    .into(ivBackDrop);
-            tvTitle.setText(getArguments().getString(ARG_TITLE));
-            tvOverview.setText(getArguments().getString(ARG_OVERVIEW));
-            rbAvgVotes.setRating(getArguments().getFloat(ARG_AVG_VOTES));
-            tvReleaseDate.append(" "+getArguments().getString(ARG_RELEASE_DATE));
-            tvTotalVotes.setText(getArguments().getString(ARG_VOTE_COUNT));
+            populateUi();
 
             //Enable Scrolling on TextView that contains the full overview.
             tvOverview.setMovementMethod(new ScrollingMovementMethod());
@@ -132,12 +121,31 @@ public class MovieDetailsFragment extends Fragment {
                     sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getArguments().getString(ARG_TITLE));
                     sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                     startActivity(Intent.createChooser(sharingIntent, "Share via"));
-            }
-        });
+                }
+            });
+
 
         }
         return view;
     }
+
+    /**
+     * Populate Fragment ui elements with data from args.
+     */
+    private void populateUi(){
+        //Populate UI Elements
+        Picasso.with(getContext()).load(getArguments()
+                .getString(ARG_BACKDROP))
+                .placeholder(R.drawable.ic_image_photo)
+                .error(R.drawable.ic_image_error)
+                .into(ivBackDrop);
+        tvTitle.setText(getArguments().getString(ARG_TITLE));
+        tvOverview.setText(getArguments().getString(ARG_OVERVIEW));
+        rbAvgVotes.setRating(getArguments().getFloat(ARG_AVG_VOTES));
+        tvReleaseDate.append(" "+getArguments().getString(ARG_RELEASE_DATE));
+        tvTotalVotes.setText(getArguments().getString(ARG_VOTE_COUNT));
+    }
+
 
     @Override
     public void onAttach(Context context) {
