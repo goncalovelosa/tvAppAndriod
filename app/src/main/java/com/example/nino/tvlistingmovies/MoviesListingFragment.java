@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.nino.tvlistingmovies.utils.MovieContent;
 import com.example.nino.tvlistingmovies.utils.MovieContent.MovieItem;
+import com.example.nino.tvlistingmovies.utils.MovieDbTasksUtils;
 import com.example.nino.tvlistingmovies.utils.NetworkUtils;
 
 import org.json.JSONArray;
@@ -38,8 +39,6 @@ public class MoviesListingFragment extends Fragment {
 
     RecyclerView mRecyclerView;
     LinearLayoutManager mLayoutManager;
-    int mRequestedPage;
-    boolean mRequesting = false;
 
 
     /**
@@ -67,8 +66,6 @@ public class MoviesListingFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
 
-        mRequestedPage = 1;
-        executeQuery(mRequestedPage);
     }
 
     @Override
@@ -91,6 +88,7 @@ public class MoviesListingFragment extends Fragment {
 
             setRecyclerViewScrollListener();
         }
+        requestMovies();
         return view;
     }
 
@@ -129,13 +127,21 @@ public class MoviesListingFragment extends Fragment {
 
     private void executeQuery(int page) {
         URL url = NetworkUtils.buildUrl(String.valueOf(page));
-        new MovieDbTask().execute(url);
+        new MovieDbTasksUtils(mRecyclerView).execute(url);
     }
 
+    /**
+     * Used to determine the last visible element for the Scroll view, used to determine when to request more movies details.
+     *
+     * @return int Value of the last Visible entry on the Scroll View.
+     */
     private int getLastVisibleItemPosition() {
         return mLayoutManager.findLastVisibleItemPosition();
     }
 
+    /**
+     * Set an Event listener on the scroll view, used to pull new page from Movie DB.
+     */
     private void setRecyclerViewScrollListener(){
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
 
@@ -143,59 +149,20 @@ public class MoviesListingFragment extends Fragment {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 int totalItemCount = mLayoutManager.getItemCount();
-                if (!mRequesting && totalItemCount == getLastVisibleItemPosition()+1){
+                if (!MovieDbTasksUtils.mRequesting && totalItemCount == getLastVisibleItemPosition()+1){
                     requestMovies();
                 }
             }
         });
     }
 
+    /**
+     * Execute async task for fetching more results form Movies.
+     */
     private void requestMovies() {
-        if(mRequestedPage < 1000){
-            executeQuery(++mRequestedPage);
+        if(MovieDbTasksUtils.mRequestPage < 1000){
+            executeQuery(++MovieDbTasksUtils.mRequestPage);
         }
     }
 
-
-    public class MovieDbTask extends AsyncTask<URL, Void, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mRequesting = true;
-        }
-
-        @Override
-        protected String doInBackground(URL... params) {
-            URL searchUrl = params[0];
-            String moviesData = null;
-            try {
-                moviesData = NetworkUtils.getResponseFromHttpUrl(searchUrl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return moviesData;
-        }
-
-        @Override
-        protected void onPostExecute(String res) {
-            if (res != null && !res.equals("")) {
-                try {
-                    JSONObject object = new JSONObject(res);
-                    JSONArray jsonArray = object.getJSONArray("results");
-                    if (jsonArray != null){
-                        for (int i = 0; i < jsonArray.length();i++){
-                            JSONObject obj = jsonArray.optJSONObject(i);
-                            MovieContent.ITEMS.add(new MovieItem(obj));
-                            mRecyclerView.getAdapter().notifyItemInserted(i);
-                        }
-                    }
-                    mRequesting = false;
-                    mRecyclerView.getAdapter().notifyDataSetChanged();
-                }catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 }

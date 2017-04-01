@@ -78,6 +78,9 @@ public class MainActivity extends AppCompatActivity
 //        });
     }
 
+    /**
+     * Used to detect when the back button has been pressed.
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
