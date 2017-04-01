@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
-
+                //TODO Sliding Content
             }
         };
 
