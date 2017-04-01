@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">TV APP Agency</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="app_site">http://www.tvappagency.com/</string>
+    <string name="drawer_live_tv">Live TV</string>
+    <string name="drawer_movies">Movies</string>
+    <string name="drawer_Series">Series</string>
+    <string name="drawer_settings">Settings</string>
+    <string name="ab_search">Search</string>
+</resources>
