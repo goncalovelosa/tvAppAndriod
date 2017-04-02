@@ -20,21 +20,27 @@ import android.widget.Toast;
 
 import com.example.nino.tvlistingmovies.utils.MovieContent;
 
+/**
+ * Main Activity will hold both Fragments, MoviesListingFragment, MovieDetailsFragment
+ */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MoviesListingFragment.OnListFragmentInteractionListener, MovieDetailsFragment.OnFragmentInteractionListener {
 
 
     static Toast lastToast = null;  //Used for reference for the Toast Pop-up Message.
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         //Set the View Activity
         setContentView(R.layout.activity_main);
 
         //Enable ToolBar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         //Load Fragment for Listing Movies
         if (savedInstanceState == null) {
@@ -71,39 +77,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-
-    }
-
-    /**
-     * Used to detect when the back button has been pressed.
-     */
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        //Clear Toast before exiting
-        if (!isToastNotRunning()){
-            lastToast.cancel();
-        }
-        //Close Drawer
-        else if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        }
-
-        else  {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        // Retrieve the SearchView and plug it into SearchManager
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
-        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        return true;
     }
 
     @Override
@@ -123,6 +96,21 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * Tool Bar Action search button click
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+
+        // Retrieve the SearchView and plug it into SearchManager
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        return true;
+    }
+
 
     /**
      * Checks with button from the navigation drawer was pressed.
@@ -147,6 +135,27 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /**
+     * Used to detect when the back button has been pressed.
+     */
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        //Clear Toast before exiting
+        if (!isToastNotRunning()){
+            lastToast.cancel();
+        }
+        //Close Drawer
+        else if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        //Default Behaviour
+        else  {
+            super.onBackPressed();
+        }
     }
 
     /**

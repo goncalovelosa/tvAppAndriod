@@ -10,21 +10,25 @@ import java.net.URL;
 import java.util.Scanner;
 
 /**
- * Created by Nino on 31/03/2017.
+ * Manage network requests.
  */
-
 public class NetworkUtils {
+
     //Basic Movies URL
     final static String MOVIES_BASIC_URL = "https://api.themoviedb.org/3/";
+
     //Discover movies URL
     final static String DISCOVER = "discover/movie";
+
     //Search Movies URL
     final static String SEARCH = "search/movie";
+
     //Params used to fetch movies details
     final static String PARAM_SORT = "sort_by";
     final static String PARAM_API = "api_key";
     final static String PARAM_PAGE = "page";
     final static String PARAM_SEARCH = "query";
+
     //Params values, default values
     final static String sortBy = "popularity.desc";
     final static String apiKey = "9c8a3badf8660ed8e756140ea8afda51";
@@ -60,8 +64,8 @@ public class NetworkUtils {
      * @return The URL to use to query the The Movie Db
      */
     public static URL buildUrl(String page, String search){
-        Uri builtUri = Uri.parse(MOVIES_BASIC_URL+SEARCH).buildUpon()
-                .appendQueryParameter(PARAM_SEARCH,search)
+        Uri builtUri = Uri.parse(MOVIES_BASIC_URL + SEARCH).buildUpon()
+                .appendQueryParameter(PARAM_SEARCH, search)
                 .appendQueryParameter(PARAM_API, apiKey)
                 .appendQueryParameter(PARAM_SORT, sortBy)
                 .appendQueryParameter(PARAM_PAGE, page)

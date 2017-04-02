@@ -11,9 +11,9 @@ import java.io.IOException;
 import java.net.URL;
 
 /**
- * Created by Nino on 01/04/2017.
+ * Class responsible for executing Async Requests to the URL provided by NetworkUtils.
+ *
  */
-
 public class MovieDbTasksUtils extends AsyncTask<URL, Void, String> {
 
 
@@ -36,7 +36,7 @@ public class MovieDbTasksUtils extends AsyncTask<URL, Void, String> {
 
     /**
      * Main task
-     * @param params
+     * @param params Contains the URL
      * @return
      */
     @Override

@@ -13,15 +13,13 @@ import java.util.List;
  */
 public class MovieContent {
 
+    /**
+     * Contains the initialized movies used by the Recycler View adapter.
+     */
     public static final List<MovieItem> ITEMS = new ArrayList<MovieItem>();
 
-
-    private static void addItem(MovieItem item) {
-        ITEMS.add(item);
-    }
-
     /**
-     * A Movie item representing a piece of content.
+     * Class used to describes a Movie item.
      */
     public static class MovieItem {
 
@@ -36,6 +34,10 @@ public class MovieContent {
         public String mOverview;       //Movie Description
         public String mBackdrop;       //Movie Backdrop URL
 
+        /**
+         *
+         * @param movieJSON
+         */
         public MovieItem(JSONObject movieJSON) {
             try {
                 mId = movieJSON.getString("id");
