@@ -4,32 +4,39 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/iv_poster"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_image_photo"
-        android:padding="5dp" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_toRightOf="@+id/iv_poster">
+        android:background="@drawable/border"
+        android:layout_margin="2dp">
+        <ImageView
+            android:id="@+id/iv_poster"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_image_photo"
+            android:padding="5dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_toRightOf="@+id/iv_poster">
 
-        <include layout="@layout/movie_title" />
+            <include layout="@layout/movie_title" />
 
-    </LinearLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        android:paddingBottom="5dp"
-        android:ellipsize="end"
-        android:maxLines="3"
-        android:textSize="20sp"
-        android:id="@+id/tv_overview"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/iv_poster"/>
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:textSize="20sp"
+            android:id="@+id/tv_overview"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/iv_poster"/>
+    </RelativeLayout>
+
 
 </RelativeLayout>

@@ -38,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/release_date"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:paddingLeft="7dp"
                 android:textStyle="bold"/>
 
