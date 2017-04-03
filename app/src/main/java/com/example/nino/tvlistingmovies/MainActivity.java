@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity
 
     static Toast lastToast = null;  //Used for reference for the Toast Pop-up Message.
 
+    ActionBarDrawerToggle mDrawerToggle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
+        mDrawerToggle = new ActionBarDrawerToggle(
                 this,
                 drawer,
                 toolbar,
@@ -195,8 +197,7 @@ public class MainActivity extends AppCompatActivity
      * Replaces fragment onto this activity, used to display movie details.
      * @param details Fragment to be loaded in the activity
      */
-    public void displayDetails(Fragment details){
-
+    public void loadFragment(Fragment details){
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, details)

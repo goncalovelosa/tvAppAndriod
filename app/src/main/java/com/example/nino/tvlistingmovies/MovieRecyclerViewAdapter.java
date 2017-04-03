@@ -62,7 +62,7 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
                                     holder.mItem.mOverview,
                                     holder.mItem.mBackdrop);
 
-                    ((MainActivity)mContext).displayDetails(details);
+                    ((MainActivity)mContext).loadFragment(details);
                 }
             }
         });
